@@ -13,7 +13,7 @@ This project implements a real-time face detection system using OpenCV. It ident
 ---
 
 ## Prerequisites
-Ensure the following are installed on your system:
+Following are used on my system:
 - Python 3.x
 - OpenCV (`opencv-python`)
 - NumPy (`numpy`)

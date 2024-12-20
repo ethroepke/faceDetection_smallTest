@@ -19,7 +19,3 @@ Ensure the following are installed on your system:
 - NumPy (`numpy`)
 - pyttsx3 (Text-to-speech library)
 - Twilio Python SDK (`twilio`)
-
-Install the required Python packages:
-```bash
-pip install opencv-python numpy pyttsx3 twilio

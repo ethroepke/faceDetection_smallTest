@@ -13,7 +13,7 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 if not os.path.exists('captured_faces'):
     os.makedirs('captured_faces')
 
-cap = cv2.VideoCapture(0) 
+cap = cv2.VideoCapture(1) 
 face_taken = False 
 
 # Define the region where the face should be centered (e.g., the middle 30% of the frame)

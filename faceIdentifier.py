@@ -4,12 +4,10 @@ import sys
 import numpy as np
 import pyttsx3  
 
-
-# Initialize the text-to-speech 
+# Initialize the text-to-speech engine
 engine = pyttsx3.init()
 
-# Set properties for speech
-# Speed rate and volume
+# Set properties for speech (speed rate and volume)
 engine.setProperty('rate', 150)
 engine.setProperty('volume', 1)
 
@@ -46,7 +44,10 @@ def check_for_face_match(face, threshold=0.7):
 if not os.path.exists('captured_faces'):
     os.makedirs('captured_faces')
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
+
+# State to track if the last detection was a match
+last_match_state = False
 
 while True:
     ret, frame = cap.read()
@@ -71,15 +72,27 @@ while True:
         if check_for_face_match(face_to_check):
             match_found = True
 
-    # If match found, say "Face Identified" through speakers
-    if match_found:
-        cv2.putText(frame, "Face Match", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            # Display "Face Match" above the bounding box
+            text = "Face Match"
+            text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.8, 2)[0]
+            text_x = x + (w - text_size[0]) // 2
+            text_y = y - 10  # Position text above the box
+            cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+        else:
+            # Display "No Face Match" above the bounding box for non-matching faces
+            text = "No Face Match"
+            text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.8, 2)[0]
+            text_x = x + (w - text_size[0]) // 2
+            text_y = y - 10  # Position text above the box
+            cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+
+    # Announce "Face Identified" only once per match state transition
+    if match_found and not last_match_state:
         engine.say("Face Identified")
         engine.runAndWait()
 
-    # If no match found, display red "No Face Match"
-    else:
-        cv2.putText(frame, "No Face Match", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    # Update last match state
+    last_match_state = match_found
 
     # Display the frame with the detected faces
     cv2.imshow("Webcam Feed with Face Detection", frame)
@@ -90,3 +103,5 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
+

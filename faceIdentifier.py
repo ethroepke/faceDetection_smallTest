@@ -44,7 +44,8 @@ def check_for_face_match(face, threshold=0.7):
 if not os.path.exists('captured_faces'):
     os.makedirs('captured_faces')
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0, cv2.CAP_AVFOUNDATION)
+
 
 # State to track if the last detection was a match
 last_match_state = False
